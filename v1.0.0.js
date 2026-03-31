@@ -3,7 +3,7 @@
     bannerBgColor,
     primaryColor,
     secondaryColor,
-    textColor
+    textColor,
   ) {
     return `
   .kw-banner {
@@ -31,7 +31,7 @@
     margin: 0 0 6px 0;
     font-size: 16px;
     font-weight: 600;
-    color: ${textColor};
+    color: "#111111";
   }
 
   .kw-banner-text p {
@@ -172,12 +172,12 @@
     margin: 0;
     font-size: 15px;
     font-weight: 600;
-    color: ${textColor};
+    color: "#111111";
   }
 
   .kw-description {
     font-size: 13px;
-    color: ${textColor};
+    color: "#666666";
     margin-bottom: 12px;
   }
 
@@ -247,7 +247,7 @@
   .kw-save-btn {
     flex: none;
     background: ${primaryColor};
-    color: ${textColor}; 
+    color: "#ffffff"; 
     padding: 12px;
     border-radius: 8px;
     font-weight: 600;
@@ -302,12 +302,12 @@
     const KAWACH_COOKIE_CONFIG = window.kawach_cookie_banner_config;
 
     if (!KAWACH_COOKIE_CONFIG || !KAWACH_COOKIE_CONFIG.token) {
-      console.error('Kawach: No valid configuration found');
+      console.error("Kawach: No valid configuration found");
       return;
     }
 
     const IS_PREVIEW = window.__KAWACH_PREVIEW__ || false;
-    const KAWACH_COOKIE_NAME = 'cookie_consent_' + KAWACH_COOKIE_CONFIG.token;
+    const KAWACH_COOKIE_NAME = "cookie_consent_" + KAWACH_COOKIE_CONFIG.token;
 
     // Google Consent Mode v2
     window.dataLayer = window.dataLayer || [];
@@ -317,17 +317,17 @@
     }
 
     const gcmDefaultConsent = {
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-      analytics_storage: 'denied',
-      functionality_storage: 'denied',
-      security_storage: 'denied',
-      personalization_storage: 'denied',
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+      functionality_storage: "denied",
+      security_storage: "denied",
+      personalization_storage: "denied",
       wait_for_update: 500,
     };
 
-    gtag('consent', 'default', gcmDefaultConsent);
+    gtag("consent", "default", gcmDefaultConsent);
 
     // Cookie Management
     function setCookie(name, value, days) {
@@ -335,33 +335,33 @@
       const expires = new Date(Date.now() + days * 86400000).toUTCString();
       document.cookie =
         name +
-        '=' +
+        "=" +
         encodeURIComponent(value) +
-        '; expires=' +
+        "; expires=" +
         expires +
-        '; path=/; SameSite=Lax';
+        "; path=/; SameSite=Lax";
     }
 
     function getCookie(name) {
       const match = document.cookie.match(
-        new RegExp('(^| )' + name + '=([^;]+)')
+        new RegExp("(^| )" + name + "=([^;]+)"),
       );
       return match ? decodeURIComponent(match[2]) : null;
     }
 
     // Google Consent Mapping
     const GOOGLE_CONSENT_MAP = [
-      { prefKey: 'analytics', signals: ['analytics_storage'] },
+      { prefKey: "analytics", signals: ["analytics_storage"] },
       {
-        prefKey: 'marketing',
-        signals: ['ad_storage', 'ad_user_data', 'ad_personalization'],
+        prefKey: "marketing",
+        signals: ["ad_storage", "ad_user_data", "ad_personalization"],
       },
       {
-        prefKey: 'functional',
+        prefKey: "functional",
         signals: [
-          'functionality_storage',
-          'security_storage',
-          'personalization_storage',
+          "functionality_storage",
+          "security_storage",
+          "personalization_storage",
         ],
       },
     ];
@@ -369,26 +369,26 @@
     function buildGoogleConsentPayload(preferences) {
       const payload = {};
       GOOGLE_CONSENT_MAP.forEach(({ prefKey, signals }) => {
-        const value = preferences[prefKey] ? 'granted' : 'denied';
-        signals.forEach(signal => (payload[signal] = value));
+        const value = preferences[prefKey] ? "granted" : "denied";
+        signals.forEach((signal) => (payload[signal] = value));
       });
       return payload;
     }
 
     function updateGoogleConsent(preferences) {
-      gtag('consent', 'update', buildGoogleConsentPayload(preferences));
+      gtag("consent", "update", buildGoogleConsentPayload(preferences));
     }
 
     function injectStyles() {
-      if (document.getElementById('cookie-consent-styles')) return;
-      const style = document.createElement('style');
-      style.id = 'cookie-consent-styles';
+      if (document.getElementById("cookie-consent-styles")) return;
+      const style = document.createElement("style");
+      style.id = "cookie-consent-styles";
       const { customStyle = {} } = KAWACH_COOKIE_CONFIG;
       style.textContent = cssStylesForCookieBanner(
-        customStyle.bannerBgColor || '#1E293B',
-        customStyle.primaryColor || '#3B82F6',
-        customStyle.secondaryColor || '#475569',
-        customStyle.textColor || '#F8FAFC'
+        customStyle.bannerBgColor || "#1E293B",
+        customStyle.primaryColor || "#3B82F6",
+        customStyle.secondaryColor || "#475569",
+        customStyle.textColor || "#F8FAFC",
       );
       document.head.appendChild(style);
     }
@@ -446,7 +446,7 @@
             preferences: prefs,
             timestamp: new Date().toISOString(),
           }),
-          KAWACH_COOKIE_CONFIG.consentExpiryDays || 180
+          KAWACH_COOKIE_CONFIG.consentExpiryDays || 180,
         );
         this.recordConsent(prefs);
       }
@@ -455,10 +455,10 @@
         if (!KAWACH_COOKIE_CONFIG.endpoint || IS_PREVIEW) return;
 
         fetch(KAWACH_COOKIE_CONFIG.endpoint, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            'X-Consent-Token': KAWACH_COOKIE_CONFIG.token,
+            "Content-Type": "application/json",
+            "X-Consent-Token": KAWACH_COOKIE_CONFIG.token,
           },
           body: JSON.stringify({
             preferences: prefs,
@@ -469,90 +469,90 @@
       }
 
       showBanner() {
-        if (document.getElementById('kawach_cookie_banner')) return;
+        if (document.getElementById("kawach_cookie_banner")) return;
 
-        const banner = document.createElement('div');
-        banner.id = 'kawach_cookie_banner';
-        banner.className = 'kw-banner';
+        const banner = document.createElement("div");
+        banner.id = "kawach_cookie_banner";
+        banner.className = "kw-banner";
         banner.innerHTML =
           '<div class="kw-banner-content">' +
           '<div class="kw-banner-text">' +
-          '<h2>' +
+          "<h2>" +
           KAWACH_COOKIE_CONFIG.bannerTitle +
-          '</h2>' +
-          '<p>' +
+          "</h2>" +
+          "<p>" +
           KAWACH_COOKIE_CONFIG.bannerDescription +
-          '</p>' +
+          "</p>" +
           (KAWACH_COOKIE_CONFIG.privacyUrl
             ? '<a href="' +
               KAWACH_COOKIE_CONFIG.privacyUrl +
               '" target="_blank">Privacy Policy</a>'
-            : '') +
-          '</div>' +
+            : "") +
+          "</div>" +
           '<div class="kw-banner-actions">' +
           '<button class="kw-btn kw-btn-secondary" id="kawach_customize_btn">Manage preferences</button>' +
           '<button class="kw-btn kw-btn-tertiary" id="kawach_reject_btn">Reject optional</button>' +
           '<button class="kw-btn kw-btn-primary" id="kawach_accept_all_btn">Accept all</button>' +
-          '</div>' +
-          '</div>';
+          "</div>" +
+          "</div>";
 
         document.body.appendChild(banner);
-        document.getElementById('kawach_accept_all_btn').onclick = () =>
+        document.getElementById("kawach_accept_all_btn").onclick = () =>
           this.acceptAll();
-        document.getElementById('kawach_reject_btn').onclick = () =>
+        document.getElementById("kawach_reject_btn").onclick = () =>
           this.rejectOptional();
-        document.getElementById('kawach_customize_btn').onclick = () =>
+        document.getElementById("kawach_customize_btn").onclick = () =>
           this.showPreferences();
       }
 
       showPreferences() {
-        let overlay = document.getElementById('kawach_cookie_overlay');
+        let overlay = document.getElementById("kawach_cookie_overlay");
         if (!overlay) {
-          overlay = document.createElement('div');
-          overlay.id = 'kawach_cookie_overlay';
-          overlay.className = 'kw-overlay';
-          overlay.onclick = e => {
+          overlay = document.createElement("div");
+          overlay.id = "kawach_cookie_overlay";
+          overlay.className = "kw-overlay";
+          overlay.onclick = (e) => {
             if (e.target === overlay) this.closePreferences();
           };
           document.body.appendChild(overlay);
         }
 
-        let panel = document.getElementById('kawach_cookie_preferences');
+        let panel = document.getElementById("kawach_cookie_preferences");
         if (!panel) {
-          panel = document.createElement('div');
-          panel.id = 'kawach_cookie_preferences';
-          panel.className = 'kw-panel';
+          panel = document.createElement("div");
+          panel.id = "kawach_cookie_preferences";
+          panel.className = "kw-panel";
           panel.innerHTML =
             '<div class="kw-header">' +
-            '<h2>Preference Center</h2>' +
+            "<h2>Preference Center</h2>" +
             '<button class="kw-close" id="kawach_prefs_close_btn">&times;</button>' +
-            '</div>' +
+            "</div>" +
             '<div id="kawach_prefs_categories"></div>' +
             '<div class="kw-footer">' +
             '<button class="kw-save-btn" id="kawach_prefs_save_btn">Save Preferences</button>' +
             '<div id="kw-powered"><img src="https://www.kawach.ai/images/kawach-logo.svg" class="kawach-logo" /></div>' +
-            '</div>';
+            "</div>";
           document.body.appendChild(panel);
-          document.getElementById('kawach_prefs_close_btn').onclick = () =>
+          document.getElementById("kawach_prefs_close_btn").onclick = () =>
             this.closePreferences();
-          document.getElementById('kawach_prefs_save_btn').onclick = () => {
+          document.getElementById("kawach_prefs_save_btn").onclick = () => {
             const prefs = {};
             (
               KAWACH_COOKIE_CONFIG.categories || [
-                'NECESSARY',
-                'ANALYTICS',
-                'MARKETING',
-                'FUNCTIONAL',
+                "NECESSARY",
+                "ANALYTICS",
+                "MARKETING",
+                "FUNCTIONAL",
               ]
-            ).forEach(cat => {
+            ).forEach((cat) => {
               const toggle = document.querySelector(
-                '[data-category="' + cat.toLowerCase() + '"]'
+                '[data-category="' + cat.toLowerCase() + '"]',
               );
               prefs[cat.toLowerCase()] =
-                cat === 'NECESSARY'
+                cat === "NECESSARY"
                   ? true
                   : toggle
-                    ? toggle.classList.contains('active')
+                    ? toggle.classList.contains("active")
                     : false;
             });
             this.preferences = prefs;
@@ -563,59 +563,59 @@
       }
 
       renderPreferences() {
-        const container = document.getElementById('kawach_prefs_categories');
-        container.innerHTML = '';
+        const container = document.getElementById("kawach_prefs_categories");
+        container.innerHTML = "";
         const categories = KAWACH_COOKIE_CONFIG.categories || [
-          'NECESSARY',
-          'ANALYTICS',
-          'MARKETING',
-          'FUNCTIONAL',
+          "NECESSARY",
+          "ANALYTICS",
+          "MARKETING",
+          "FUNCTIONAL",
         ];
 
         const descriptions = {
           NECESSARY:
-            'These cookies are essential so that you can move around the website and use its features.',
+            "These cookies are essential so that you can move around the website and use its features.",
           ANALYTICS:
-            'These cookies track user behaviour on the website, such as pages visited and duration.',
+            "These cookies track user behaviour on the website, such as pages visited and duration.",
           MARKETING:
-            'These cookies help identify users to show relevant advertising material.',
+            "These cookies help identify users to show relevant advertising material.",
           FUNCTIONAL:
-            'These cookies remember choices you make, such as language and region preferences.',
+            "These cookies remember choices you make, such as language and region preferences.",
         };
 
-        categories.forEach(cat => {
+        categories.forEach((cat) => {
           const pref =
-            cat === 'NECESSARY' ? true : this.preferences[cat.toLowerCase()];
-          const div = document.createElement('div');
-          div.className = 'kw-section';
+            cat === "NECESSARY" ? true : this.preferences[cat.toLowerCase()];
+          const div = document.createElement("div");
+          div.className = "kw-section";
 
           div.innerHTML =
             '<div class="kw-section-header">' +
-            '<h3>' +
+            "<h3>" +
             cat.charAt(0) +
             cat.slice(1).toLowerCase() +
-            '</h3>' +
-            (cat === 'NECESSARY'
+            "</h3>" +
+            (cat === "NECESSARY"
               ? '<span class="kw-tag">Required</span>'
               : '<div class="kw-toggle ' +
-                (pref ? 'active' : '') +
+                (pref ? "active" : "") +
                 '" data-category="' +
                 cat.toLowerCase() +
                 '"></div>') +
-            '</div>' +
+            "</div>" +
             '<div class="kw-description">' +
             descriptions[cat] +
-            '</div>';
+            "</div>";
 
           container.appendChild(div);
 
-          if (cat !== 'NECESSARY') {
-            const toggle = div.querySelector('.kw-toggle');
+          if (cat !== "NECESSARY") {
+            const toggle = div.querySelector(".kw-toggle");
             if (toggle) {
               toggle.onclick = () => {
-                toggle.classList.toggle('active');
+                toggle.classList.toggle("active");
                 this.preferences[cat.toLowerCase()] =
-                  toggle.classList.contains('active');
+                  toggle.classList.contains("active");
               };
             }
           }
@@ -643,8 +643,8 @@
       }
 
       closePreferences() {
-        const panel = document.getElementById('kawach_cookie_preferences');
-        const overlay = document.getElementById('kawach_cookie_overlay');
+        const panel = document.getElementById("kawach_cookie_preferences");
+        const overlay = document.getElementById("kawach_cookie_overlay");
         if (panel) panel.remove();
         if (overlay) overlay.remove();
       }
@@ -652,7 +652,7 @@
       saveAndClose() {
         if (IS_PREVIEW) return;
         this.savePreferences(this.preferences);
-        const banner = document.getElementById('kawach_cookie_banner');
+        const banner = document.getElementById("kawach_cookie_banner");
         if (banner) banner.remove();
         this.closePreferences();
         this.applyConsent();
@@ -663,25 +663,25 @@
       }
 
       addSettingsLink() {
-        const trigger = document.getElementById('kawach_cookie_settings_slot');
+        const trigger = document.getElementById("kawach_cookie_settings_slot");
         if (!trigger) return;
-        trigger.style.cursor = 'pointer';
-        trigger.addEventListener('click', e => {
+        trigger.style.cursor = "pointer";
+        trigger.addEventListener("click", (e) => {
           e.preventDefault();
           this.showPreferences();
         });
       }
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => new CookieConsent());
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => new CookieConsent());
     } else {
       new CookieConsent();
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
   }
